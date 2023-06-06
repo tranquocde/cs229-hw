@@ -17,7 +17,7 @@ class LinearModel(object):
         """
         self.theta = theta
 
-    def fit(self, X, y):
+    def fit(self, X:np.ndarray, y:np.ndarray):
         """Run solver to fit linear model. You have to update the value of
         self.theta using the normal equations.
 
@@ -26,9 +26,11 @@ class LinearModel(object):
             y: Training example labels. Shape (n_examples,).
         """
         # *** START CODE HERE ***
+        y_new = np.expand_dims(y, axis=1)
+        self.theta = np.linalg.solve(np.dot(X.T, X), np.dot(X.T, y_new))
         # *** END CODE HERE ***
 
-    def create_poly(self, k, X):
+    def create_poly(self, k, X:np.ndarray):
         """
         Generates a polynomial feature map using the data x.
         The polynomial map should have powers from 0 to k
@@ -38,6 +40,12 @@ class LinearModel(object):
             X: Training example inputs. Shape (n_examples, 2).
         """
         # *** START CODE HERE ***
+       
+        for i in range(2, k+1):
+            pow_x=np.power(X[:,1], i)
+            pow_x=np.expand_dims(pow_x, axis=1)
+            X=np.hstack((X,pow_x))
+        return X
         # *** END CODE HERE ***
 
     def create_sin(self, k, X):
@@ -49,6 +57,7 @@ class LinearModel(object):
             X: Training example inputs. Shape (n_examples, 2).
         """
         # *** START CODE HERE ***
+
         # *** END CODE HERE ***
 
     def predict(self, X):
@@ -63,6 +72,7 @@ class LinearModel(object):
             Outputs of shape (n_examples,).
         """
         # *** START CODE HERE ***
+        return X.dot(self.theta)
         # *** END CODE HERE ***
 
 
@@ -78,6 +88,11 @@ def run_exp(train_path, sine=False, ks=[1, 2, 3, 5, 10, 20], filename='plot.png'
         Our objective is to train models and perform predictions on plot_x data
         '''
         # *** START CODE HERE ***
+        model = LinearModel()
+        X = model.create_poly(k,train_x)
+        model.fit(X,train_y)
+        x_eval = model.create_poly(k,plot_x)
+        plot_y = model.predict(x_eval)
         # *** END CODE HERE ***
         '''
         Here plot_y are the predictions of the linear model on the plot_x data
@@ -95,6 +110,7 @@ def main(train_path, small_path, eval_path):
     Run all expetriments
     '''
     # *** START CODE HERE ***
+    run_exp(train_path)
     # *** END CODE HERE ***
 
 if __name__ == '__main__':

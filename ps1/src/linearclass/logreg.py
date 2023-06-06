@@ -20,7 +20,7 @@ def main(train_path, valid_path, save_path):
     # Plot decision boundary on top of validation set set
     x_eval, y_eval = util.load_dataset(valid_path, add_intercept=True)
     plot_path = save_path.replace('.txt', '.png')
-    util.plot(x_eval, y_eval, clf.theta, plot_path)
+    # util.plot(x_eval, y_eval, clf.theta, plot_path)
 
     # Use np.savetxt to save predictions on eval set to save_path
     p_eval = clf.predict(x_eval)
@@ -100,11 +100,12 @@ class LogisticRegression:
         return grad
 
     def _hessian(self,x):
+        #x:(800,3)
         m, _ = x.shape
 
-        probs = self._sigmoid(x.dot(self.theta))
-        diag = np.diag(probs * (1. - probs))
-        hess = 1 / m * x.T.dot(diag).dot(x)
+        probs = self._sigmoid(x.dot(self.theta)) #(800,)
+        diag = np.diag(probs * (1. - probs)) #(800,800)
+        hess = 1 / m * x.T.dot(diag).dot(x) #(3,3)
         return hess
 
 

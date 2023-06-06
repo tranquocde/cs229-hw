@@ -20,7 +20,7 @@ def train_and_predict_svm(train_matrix, train_labels, test_matrix, radius):
     return svm_predict(model, test_matrix, radius)
 
 
-def svm_train(matrix, category, radius):
+def svm_train(matrix:np.ndarray, category, radius):
     state = {}
     M, N = matrix.shape
     Y = 2 * category - 1
